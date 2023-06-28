@@ -2,14 +2,14 @@ class AddedComment {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { content, id, owner } = payload;
-    this.content = content;
+    const { id, content, owner } = payload;
     this.id = id;
+    this.content = content;
     this.owner = owner;
   }
 
-  _verifyPayload({ content, id, owner }) {
-    if (!content || !id || !owner) {
+  _verifyPayload({ id, content, owner }) {
+    if (!id || !content || !owner) {
       throw new Error('ADDED_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
