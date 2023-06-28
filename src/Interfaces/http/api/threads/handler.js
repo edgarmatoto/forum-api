@@ -6,7 +6,7 @@ class ThreadsHandler {
     this._container = container;
 
     this.postThreadHandler = this.postThreadHandler.bind(this);
-    this.getThreadByIdHandler = this.getDetailThreadByIdHandler.bind(this);
+    this.getDetailThreadByIdHandler = this.getDetailThreadByIdHandler.bind(this);
   }
 
   async postThreadHandler(request, h) {

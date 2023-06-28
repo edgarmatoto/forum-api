@@ -1,5 +1,3 @@
-const DetailThread = require('../../Domains/threads/entities/DetailThread');
-
 class GetDetailThreadUseCase {
   constructor({ threadRepository, commentRepository }) {
     this._threadRepository = threadRepository;
