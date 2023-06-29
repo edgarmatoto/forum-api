@@ -115,6 +115,12 @@ describe('CommentRepositoryPostgres', () => {
       // Assert
       expect(result).toBeDefined();
       expect(result).toHaveLength(1);
+      expect(result[0]).toHaveProperty('id', 'comment-123');
+      expect(result[0]).toHaveProperty('content', 'comment_content');
+      expect(result[0]).toHaveProperty('thread_id', 'thread-123');
+      expect(result[0]).toHaveProperty('owner', 'user-123');
+      expect(result[0]).toHaveProperty('username', 'dicoding');
+      expect(result[0]).toHaveProperty('is_delete', false);
     });
   });
 

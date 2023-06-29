@@ -34,23 +34,26 @@ describe('GetDetailThreadUseCase', () => {
 
     mockCommentRepository.getCommentByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([
-        new DetailComment({
+        {
           id: 'comment-123',
           username: 'user',
           date: '2023',
           content: 'comment_content',
           is_delete: false,
-        }),
+          thread_id: 'thread-123',
+        },
       ]));
 
     mockThreadRepository.getDetailThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(new DetailThread({
-        title: 'thread-title',
-        id: 'thread-123',
-        date: '2023',
-        body: 'thread_body',
-        username: 'user',
-      })));
+      .mockImplementation(() => Promise.resolve(
+        {
+          title: 'thread-title',
+          id: 'thread-123',
+          date: '2023',
+          body: 'thread_body',
+          username: 'user',
+        },
+      ));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -95,23 +98,26 @@ describe('GetDetailThreadUseCase', () => {
 
     mockCommentRepository.getCommentByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve([
-        new DetailComment({
+        {
           id: 'comment-123',
           username: 'user',
           date: '2023',
           content: '**komentar telah dihapus**',
           is_delete: true,
-        }),
+          thread_id: 'thread-123',
+        },
       ]));
 
     mockThreadRepository.getDetailThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(new DetailThread({
-        title: 'thread-title',
-        id: 'thread-123',
-        date: '2023',
-        body: 'thread_body',
-        username: 'user',
-      })));
+      .mockImplementation(() => Promise.resolve(
+        {
+          title: 'thread-title',
+          id: 'thread-123',
+          date: '2023',
+          body: 'thread_body',
+          username: 'user',
+        },
+      ));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
