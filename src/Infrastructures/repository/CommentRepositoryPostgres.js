@@ -35,8 +35,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!rowCount) {
       throw new NotFoundError('Komentar tidak ditemukan');
     }
-
-    return rowCount;
   }
 
   async getCommentByThreadId(threadId) {

@@ -3,6 +3,7 @@ const NewComment = require('../../../Domains/comments/entities/NewComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const AddCommentUseCase = require('../AddCommentUseCase');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating add comment action correctly', async () => {
@@ -43,6 +44,7 @@ describe('AddCommentUseCase', () => {
     // Assert
     expect(addedComment).toStrictEqual(expectedAddedComment);
     expect(mockCommentRepository.addComment).toBeCalledWith(new NewComment(commentUseCasePayload));
+    expect(mockThreadRepository.verifyThreadExistence).toBeCalledWith(commentUseCasePayload.threadId);
   });
 
   it('should throw error when thread not exist', async () => {
@@ -53,30 +55,19 @@ describe('AddCommentUseCase', () => {
       content: 'comment_content',
     };
 
-    const expectedAddedComment = new AddedComment({
-      id: 'comment-123',
-      content: useCasePayload.content,
-      owner: 'user-123',
-    });
-
-    // Generate Add Comment use case dependency
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
 
     mockThreadRepository.verifyThreadExistence = jest.fn()
-      .mockImplementation(() => Promise.reject());
+      .mockImplementation(() => Promise.reject(new NotFoundError()));
 
-    mockCommentRepository.addComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedComment));
-
-    // Generate use case instance
     const addCommentUseCase = new AddCommentUseCase({
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,
     });
 
     // Action
-    await expect(addCommentUseCase.execute(useCasePayload)).rejects.toThrowError('ADD_COMMENT_USE_CASE.THREAD_NOT_FOUND');
-    expect(mockThreadRepository.verifyThreadExistence).toHaveBeenCalledWith(useCasePayload.threadId);
+    await expect(addCommentUseCase.execute(useCasePayload)).rejects.toThrow(NotFoundError);
+    expect(mockThreadRepository.verifyThreadExistence).toBeCalledWith(useCasePayload.threadId);
   });
 });

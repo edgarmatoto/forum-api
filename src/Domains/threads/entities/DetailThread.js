@@ -3,12 +3,12 @@ class DetailThread {
     this._verifyPayload(payload);
 
     const {
-      title, id, date, body, username,
+      id, title, body, date, username,
     } = payload;
-    this.title = title;
     this.id = id;
-    this.date = date;
+    this.title = title;
     this.body = body;
+    this.date = date;
     this.username = username;
   }
 
