@@ -67,7 +67,7 @@ describe('ThreadRepositoryPostgres', () => {
     it('should get detail thread correctly', async () => {
       // Arrange
       await ThreadsTableTestHelper.addThread({
-        id: 'thread-123', title: 'thread_title', body: 'thread_body', owner: 'user-123',
+        id: 'thread-123', title: 'thread_title', body: 'thread_body', owner: 'user-123', date: new Date('2023-06-29T13:10:23.749Z'),
       });
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
@@ -76,10 +76,13 @@ describe('ThreadRepositoryPostgres', () => {
       const thread = await threadRepositoryPostgres.getDetailThreadById('thread-123');
 
       // Assert
-      expect(thread).toHaveProperty('id', 'thread-123');
-      expect(thread).toHaveProperty('title', 'thread_title');
-      expect(thread).toHaveProperty('body', 'thread_body');
-      expect(thread).toHaveProperty('username', 'dicoding');
+      expect(thread).toStrictEqual({
+        id: 'thread-123',
+        title: 'thread_title',
+        body: 'thread_body',
+        date: new Date('2023-06-29T13:10:23.749Z'),
+        username: 'dicoding',
+      });
     });
 
     it('should return NotFoundError when thread not found', async () => {

@@ -113,14 +113,17 @@ describe('CommentRepositoryPostgres', () => {
       const result = await commentRepositoryPostgres.getCommentByThreadId('thread-123');
 
       // Assert
-      expect(result).toBeDefined();
-      expect(result).toHaveLength(1);
-      expect(result[0]).toHaveProperty('id', 'comment-123');
-      expect(result[0]).toHaveProperty('content', 'comment_content');
-      expect(result[0]).toHaveProperty('thread_id', 'thread-123');
-      expect(result[0]).toHaveProperty('owner', 'user-123');
-      expect(result[0]).toHaveProperty('username', 'dicoding');
-      expect(result[0]).toHaveProperty('is_delete', false);
+      expect(result).toStrictEqual([
+        {
+          id: 'comment-123',
+          thread_id: 'thread-123',
+          owner: 'user-123',
+          content: 'comment_content',
+          date: new Date('2023-06-29T13:10:23.749Z'),
+          is_delete: false,
+          username: 'dicoding',
+        },
+      ]);
     });
   });
 
