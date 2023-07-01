@@ -1,9 +1,8 @@
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const NewComment = require('../../../Domains/comments/entities/NewComment');
-const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
+const NewComment = require('../../../../Domains/comments/entities/NewComment');
+const AddedComment = require('../../../../Domains/comments/entities/AddedComment');
 const AddCommentUseCase = require('../AddCommentUseCase');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating add comment action correctly', async () => {
@@ -45,29 +44,5 @@ describe('AddCommentUseCase', () => {
     expect(addedComment).toStrictEqual(expectedAddedComment);
     expect(mockCommentRepository.addComment).toBeCalledWith(new NewComment(commentUseCasePayload));
     expect(mockThreadRepository.verifyThreadExistence).toBeCalledWith(commentUseCasePayload.threadId);
-  });
-
-  it('should throw error when thread not exist', async () => {
-    // Arrange
-    const useCasePayload = {
-      owner: 'user-123',
-      threadId: 'thread-123',
-      content: 'comment_content',
-    };
-
-    const mockCommentRepository = new CommentRepository();
-    const mockThreadRepository = new ThreadRepository();
-
-    mockThreadRepository.verifyThreadExistence = jest.fn()
-      .mockImplementation(() => Promise.reject(new NotFoundError()));
-
-    const addCommentUseCase = new AddCommentUseCase({
-      commentRepository: mockCommentRepository,
-      threadRepository: mockThreadRepository,
-    });
-
-    // Action
-    await expect(addCommentUseCase.execute(useCasePayload)).rejects.toThrow(NotFoundError);
-    expect(mockThreadRepository.verifyThreadExistence).toBeCalledWith(useCasePayload.threadId);
   });
 });

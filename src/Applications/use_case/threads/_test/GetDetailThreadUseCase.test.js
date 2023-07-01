@@ -1,7 +1,7 @@
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const DetailComment = require('../../../Domains/comments/entities/DetailComment');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const DetailThread = require('../../../Domains/threads/entities/DetailThread');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
+const DetailComment = require('../../../../Domains/comments/entities/DetailComment');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
+const DetailThread = require('../../../../Domains/threads/entities/DetailThread');
 const GetDetailThreadUseCase = require('../GetDetailThreadUseCase');
 
 describe('GetDetailThreadUseCase', () => {

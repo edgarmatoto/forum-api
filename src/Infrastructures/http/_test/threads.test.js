@@ -4,6 +4,7 @@ const container = require('../../container');
 const pool = require('../../database/postgres/pool');
 const createServer = require('../createServer');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
+const UsersLoginTestHelper = require('../../../../tests/UsersLoginTestHelper');
 
 describe('/threads endpoint', () => {
   afterAll(async () => {
@@ -21,32 +22,12 @@ describe('/threads endpoint', () => {
       // Arrange
       const server = await createServer(container);
 
+      const { accessToken } = await UsersLoginTestHelper.getUserIdAndAccessTokenObject({ server });
+
       const threadPayload = {
         title: 'thread_title',
         body: 'thread_body',
       };
-
-      // user regist
-      await server.inject({
-        method: 'POST',
-        url: '/users',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-          fullname: 'Dicoding Indonesia',
-        },
-      });
-
-      // user login
-      const userAuth = await server.inject({
-        method: 'POST',
-        url: '/authentications',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-        },
-      });
-      const { data: { accessToken } } = JSON.parse(userAuth.payload);
 
       // Action
       const response = await server.inject({
@@ -69,31 +50,11 @@ describe('/threads endpoint', () => {
       // Arrange
       const server = await createServer(container);
 
+      const { accessToken } = await UsersLoginTestHelper.getUserIdAndAccessTokenObject({ server });
+
       const threadPayload = {
         body: 'thread_body',
       };
-
-      // user regist
-      await server.inject({
-        method: 'POST',
-        url: '/users',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-          fullname: 'Dicoding Indonesia',
-        },
-      });
-
-      // user login
-      const userAuth = await server.inject({
-        method: 'POST',
-        url: '/authentications',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-        },
-      });
-      const { data: { accessToken } } = JSON.parse(userAuth.payload);
 
       // Action
       const response = await server.inject({
@@ -140,43 +101,10 @@ describe('/threads endpoint', () => {
       // Arrange
       const server = await createServer(container);
 
-      const threadPayload = {
-        title: 'thread_title',
-        body: 'thread_body',
-      };
+      const { userId } = await UsersLoginTestHelper.getUserIdAndAccessTokenObject({ server });
 
-      // user regist
-      await server.inject({
-        method: 'POST',
-        url: '/users',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-          fullname: 'Dicoding Indonesia',
-        },
-      });
-
-      // user login
-      const userAuth = await server.inject({
-        method: 'POST',
-        url: '/authentications',
-        payload: {
-          username: 'dicoding',
-          password: 'secret',
-        },
-      });
-      const { data: { accessToken } } = JSON.parse(userAuth.payload);
-
-      const thread = await server.inject({
-        method: 'POST',
-        url: '/threads',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        payload: threadPayload,
-      });
-
-      const threadId = thread.result.data.addedThread.id;
+      const threadId = 'thread-123';
+      await ThreadsTableTestHelper.addThread({ owner: userId });
 
       // Action
       const response = await server.inject({

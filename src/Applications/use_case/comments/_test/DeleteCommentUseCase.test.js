@@ -1,4 +1,4 @@
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {

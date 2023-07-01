@@ -11,6 +11,7 @@ const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 describe('CommentRepositoryPostgres', () => {
   beforeEach(async () => {
     await UsersTableTestHelper.addUser({ username: 'dicoding' });
+    await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
   });
 
   afterEach(async () => {
@@ -26,8 +27,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('add comment to database', () => {
     it('should persist add comment correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
-
       const newComment = new NewComment({
         content: 'comment_content',
         threadId: 'thread-123',
@@ -49,8 +48,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should return added comment correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
-
       const newComment = new NewComment({
         content: 'comment_content',
         threadId: 'thread-123',
@@ -77,7 +74,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('deleteCommentById function', () => {
     it('should persist delete comment correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({});
       await CommentsTableTestHelper.addComment({});
       const commentId = 'comment-123';
 
@@ -104,7 +100,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('getCommentByThreadId function', () => {
     it('should return comment by thread id correctly', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await CommentsTableTestHelper.addComment({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -130,7 +125,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('verifyCommentOwner', () => {
     it('should return AuthorizationError when comment owner is not the real owner', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -142,7 +136,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should not return AuthorizationError when comment owner is the real owner', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
@@ -156,7 +149,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('verifyCommentExistenceInThread', () => {
     it('should return NotFoundError when comment in thread is not exist', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-321' });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
 
@@ -169,7 +161,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should not return NotFoundError when comment in thread is exist', async () => {
       // Arrange
-      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
       await CommentsTableTestHelper.addComment({ id: 'comment-123' });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
