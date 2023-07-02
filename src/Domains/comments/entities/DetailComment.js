@@ -3,23 +3,22 @@ class DetailComment {
     this._verifyPayload(payload);
 
     const {
-      content, id, date, username, is_delete,
+      content, id, date, username,
     } = payload;
     this.id = id;
     this.username = username;
     this.date = date;
     this.content = content;
-    this.is_delete = is_delete;
   }
 
   _verifyPayload({
-    id, date, username, content, is_delete,
+    id, date, username, content,
   }) {
-    if (!id || !date || !username || !content || is_delete === undefined) {
+    if (!id || !date || !username || !content) {
       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof date !== 'string' || typeof username !== 'string' || typeof content !== 'string' || typeof is_delete !== 'boolean') {
+    if (typeof id !== 'string' || typeof date !== 'string' || typeof username !== 'string' || typeof content !== 'string') {
       throw new Error('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

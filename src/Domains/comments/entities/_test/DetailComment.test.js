@@ -5,7 +5,7 @@ describe('DetailComment entities', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
-      date: '2023',
+      username: 'atan',
       content: 'comment_content',
     };
 
@@ -16,11 +16,10 @@ describe('DetailComment entities', () => {
   it('should throw error when payload has forbidden data type', () => {
     // Arrange
     const payload = {
-      id: {},
-      username: true,
+      id: 123,
+      username: [],
       date: '2023',
-      content: 'comment_content',
-      is_delete: 1,
+      content: {},
     };
 
     // Action and Assert
@@ -34,7 +33,6 @@ describe('DetailComment entities', () => {
       username: 'atan',
       date: '2023',
       content: 'comment_content',
-      is_delete: false,
     };
 
     // Action
@@ -45,6 +43,5 @@ describe('DetailComment entities', () => {
     expect(detailComment.username).toEqual(payload.username);
     expect(detailComment.date).toEqual(payload.date);
     expect(detailComment.content).toEqual(payload.content);
-    expect(detailComment.is_delete).toEqual(payload.is_delete);
   });
 });

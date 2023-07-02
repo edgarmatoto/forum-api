@@ -13,7 +13,7 @@ class DetailThread {
   }
 
   _verifyPayload({
-    title, id, date, body, username, comments,
+    title, id, date, body, username,
   }) {
     if (!title || !id || !date || !body || !username) {
       throw new Error('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
