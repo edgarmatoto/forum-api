@@ -64,7 +64,7 @@ const createServer = async (container) => {
     method: 'GET',
     path: '/',
     handler: () => ({
-      value: 'success',
+      value: 'server successfully connected',
     }),
   });
 
